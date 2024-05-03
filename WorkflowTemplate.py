@@ -45,9 +45,6 @@ workflow_template_client = dataproc.WorkflowTemplateServiceClient(
 )
 request = dataproc.InstantiateWorkflowTemplateRequest(
     name=f"projects/{project_id}/regions/{region}/workflowTemplates/{template_name}",
-    parameters={
-        "ARGS": json.dumps({"REGION": region}),
-    },
 )
 
 workflow_execution = workflow_template_client.instantiate_workflow_template(request)
