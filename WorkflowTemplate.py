@@ -36,4 +36,21 @@ def create_simple_template(template_name):
     print(f"Template created with ID: {response.id}")
  
 # Example usage
-create_simple_template("simple-dataproc-workflow")
+template_name = "simple-dataproc-workflow"
+create_simple_template(template_name)
+
+workflow_template_client = dataproc.WorkflowTemplateServiceClient(
+ client_options={"api_endpoint": f"{region}-dataproc.googleapis.com:443"}
+)
+request = dataproc.InstantiateWorkflowTemplateRequest(
+    name=f"projects/{project_id}/regions/{region}/workflowTemplates/{template_name}",
+    parameters={
+        "ARGS": json.dumps({"REGION": region}),
+    },
+)
+
+workflow_execution = workflow_template_client.instantiate_workflow_template(request)
+print(workflow_execution.operation)
+print(
+    f"The workflow {template_name} submitted with name {workflow_execution.operation.name} Executed"
+)
