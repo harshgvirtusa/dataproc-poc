@@ -1,29 +1,15 @@
 import sys
 from pyspark.sql import SparkSession
  
-# Function to parse key-value arguments safely
-def parse_args(args):
-    parsed_args = {}
-    for arg in args:
-        print("arg:", arg)
-        if '=' in arg:
-            key, value = arg.split('=', 1)
-            parsed_args[key] = value
-    return parsed_args
- 
 # Retrieve the JOB_NAME, INPUT_PATH, and OUTPUT_PATH arguments
-args = parse_args(sys.argv[1:])
-required_keys = ['JOB_NAME', 'INPUT_PATH', 'OUTPUT_PATH']
+args = sys.argv[1:]
+# required_keys = ['JOB_NAME', 'INPUT_PATH', 'OUTPUT_PATH']
+for arg in args:
+    print("arg:", arg)
  
-# Check if all required arguments are present
-missing_keys = [key for key in required_keys if key not in args]
-if missing_keys:
-    print(f"Error: Missing argument(s): {', '.join(missing_keys)}")
-    sys.exit(1)
- 
-job_name = args['JOB_NAME']
-input_path = args['INPUT_PATH']
-output_path = args['OUTPUT_PATH']
+job_name = args[0]
+input_path = args[1]
+output_path = args[2]
  
 # Initialize Spark Session
 spark = SparkSession.builder.appName(job_name).getOrCreate()
